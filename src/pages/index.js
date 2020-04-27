@@ -7,8 +7,10 @@ import useTodoStore from "../api"
 import "../styles.css"
 import { StyledButton, DeleteButton } from "../components/button"
 import styled from "@emotion/styled"
+import "../config"
+
 const TodoForm = ({ initialValues, onSubmit, submitLabel }) => {
-  const defaultTodo = { content: "" }
+  const defaultTodo = { title: "" }
   return (
     <Formik
       initialValues={{ ...defaultTodo, ...initialValues }}
@@ -17,12 +19,12 @@ const TodoForm = ({ initialValues, onSubmit, submitLabel }) => {
       {({ values, isSubmitting, handleSubmit, handleChange, handleBlur }) => (
         <form onSubmit={handleSubmit}>
           <TextFormField
-            name="content"
-            label="Content"
-            id="todo-content"
+            name="title"
+            label="title"
+            id="todo-title"
             onChange={handleChange}
             onBlur={handleBlur}
-            value={values.content}
+            value={values.title}
           />
           <StyledButton type="submit" disabled={isSubmitting}>
             {submitLabel}
@@ -60,7 +62,7 @@ const StyledGrid = styled.div`
 const StyledTodo = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-title: space-between;
   padding: 0 20px;
   box-shadow: #c8c0c0 0px 0px 11px 1px;
 
@@ -81,11 +83,11 @@ const CTAAction = styled.div`
   position: fixed;
   bottom: 10px;
   display: flex;
-  justify-content: center;
+  justify-title: center;
   width: 100vw;
 `
 
-const Todo = ({ id, content, onEdit, onDelete }) => {
+const Todo = ({ id, title, onEdit, onDelete }) => {
   return (
     <StyledTodo
       onClick={e => {
@@ -94,7 +96,7 @@ const Todo = ({ id, content, onEdit, onDelete }) => {
       }}
     >
       <p>
-        {id} : {content}
+        {id} : {title}
       </p>
       <DeleteButton
         onClick={e => {

@@ -1,0 +1,31 @@
+{
+  "paths": [
+    {
+      "name": "/todo",
+      "lambdaFunction": "todo",
+      "privacy": {
+        "open": true
+      }
+    }
+  ],
+  "resourceName": "todo",
+  "apiName": "api",
+  "functionArns": [
+    {
+      "lambdaFunction": "todo"
+    }
+  ],
+  "privacy": {
+    "auth": 0,
+    "unauth": 0,
+    "authRoleName": "amplify-awsamplifytodoapp-dev-110523-authRole",
+    "unAuthRoleName": "amplify-awsamplifytodoapp-dev-110523-unauthRole"
+  },
+  "dependsOn": [
+    {
+      "category": "function",
+      "resourceName": "todo",
+      "attributes": ["Name", "Arn"]
+    }
+  ]
+}

@@ -1,15 +1,29 @@
 import { useState } from "react"
+import { API } from "aws-amplify"
+
+const apiName = "todo"
+const path = "/todo"
+const myInit = {
+  // OPTIONAL
+  // headers: {}, // OPTIONAL
+  // response: true, // OPTIONAL (return the entire Axios response object instead of only response.data)
+  // queryStringParameters: {  // OPTIONAL
+  //     name: 'param',
+  // },
+}
 
 const useTodoStore = () => {
   const [todos, setTodos] = useState([])
   const getTodos = () => {
-    setTimeout(() => {
-      setTodos([
-        { id: 1, content: "Faire des calins" },
-        { id: 2, content: "Jouer aux jeux" },
-        { id: 3, content: "Faire le menage" },
-      ])
-    }, 500)
+    API.get(apiName, path + "/todo", {
+      response: true, // OPTIONAL (return the entire Axios response object instead of only response.data)
+    })
+      .then(response => {
+        setTodos(response)
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   const getNewId = () => {
@@ -17,16 +31,38 @@ const useTodoStore = () => {
   }
 
   const createTodo = todo => {
-    setTodos([...todos, { ...todo, id: getNewId() }].sort((a, b) => a - b))
+    API.post(apiName, path, {
+      body: todo,
+    })
+      .then(response => {
+        setTodos([...todos, { ...todo, id: getNewId() }].sort((a, b) => a - b))
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   const updateTodo = todo => {
-    const updatedTodos = todos.map(t => (t.id === todo.id ? todo : t))
-    setTodos([...updatedTodos].sort((a, b) => a - b))
+    API.put(apiName, path, {
+      body: todo,
+    })
+      .then(response => {
+        const updatedTodos = todos.map(t => (t.id === todo.id ? todo : t))
+        setTodos([...updatedTodos].sort((a, b) => a - b))
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   const deleteTodo = todoId => {
-    setTodos(todos.filter(t => t.id !== todoId))
+    API.del(apiName, path, myInit)
+      .then(response => {
+        setTodos(todos.filter(t => t.id !== todoId))
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   return {
